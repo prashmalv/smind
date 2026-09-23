@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.turbo/
+
+# Env & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Data & media
+data/*.db
+*.sqlite3
+edge/camera-agent/samples/*.mp4
+edge/camera-agent/samples/*.mov
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Azure
+.azure/
+
+# Source concept document — an input to the build, not code, and this repository is
+# public. Delete this line if you want it published alongside the source.
+V1 ShopperMind-AI-Concept-Doc.pdf

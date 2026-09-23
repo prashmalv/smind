@@ -1,0 +1,3 @@
+requests>=2.32
+# Only needed for real cameras or video files; --simulate runs without it.
+opencv-python>=4.10

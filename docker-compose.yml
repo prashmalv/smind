@@ -1,0 +1,77 @@
+# Local ShopperMind. Everything runs with no Azure account and no camera hardware:
+#   docker compose up --build
+#   → web http://localhost:3000 · api http://localhost:8000/docs
+#
+# Azure services stay unset here, so the API uses its local reasoner, the browser's
+# speech engine, and the simulated camera feed. Fill in .env to switch any of them on.
+
+name: shoppermind
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shoppermind
+      POSTGRES_PASSWORD: shoppermind
+      POSTGRES_DB: shoppermind
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shoppermind -d shoppermind"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./apps/api
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      SHOPPERMIND_ENV: local
+      DATABASE_URL: postgresql+psycopg://shoppermind:shoppermind@db:5432/shoppermind
+      API_SECRET_KEY: ${API_SECRET_KEY:-local-dev-key-change-before-any-real-use}
+      CORS_ORIGINS: http://localhost:3000
+      # Optional — leave blank to run on the local fallbacks.
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_CHAT_DEPLOYMENT: ${AZURE_OPENAI_CHAT_DEPLOYMENT:-gpt-4o}
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-centralindia}
+      AZURE_VISION_ENDPOINT: ${AZURE_VISION_ENDPOINT:-}
+      AZURE_VISION_KEY: ${AZURE_VISION_KEY:-}
+      AZURE_LANGUAGE_ENDPOINT: ${AZURE_LANGUAGE_ENDPOINT:-}
+      AZURE_LANGUAGE_KEY: ${AZURE_LANGUAGE_KEY:-}
+    ports: ["8000:8000"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      api: { condition: service_healthy }
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["3000:3000"]
+
+  # A store gateway, simulated. Register the camera codes in the UI first, then:
+  #   docker compose --profile edge up camera-agent
+  camera-agent:
+    profiles: ["edge"]
+    build: ./edge/camera-agent
+    depends_on:
+      api: { condition: service_healthy }
+    environment:
+      SHOPPERMIND_API_URL: http://api:8000
+      CAMERA_AGENT_KEY: ${CAMERA_AGENT_KEY:-}
+    command: ["--simulate", "--cameras", "KOR-ENT:entrance,KOR-QUE:queue,KOR-DSP:display", "--window", "300"]
+
+volumes:
+  pgdata:
