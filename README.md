@@ -250,10 +250,13 @@ warning on three steps, which obliges relief rather than forbidding them: every 
 visible axis labels and a hover readout, and every module page renders the underlying table
 beneath the chart, so a value is never carried by the fill alone.
 
-The RLAI lockup (`apps/web/public/rlailogo.png`, copied from SupplyMind) sits in the
-sidebar, the marketing nav and both auth pages, and the favicon is generated from it. The
-asset has its navy background baked in rather than being transparent, so it renders as a
-solid block on the light sidebar — the same treatment it gets in SupplyMind.
+The ShopperMind lockup sits in the sidebar, the marketing nav and both auth pages, with a
+variant drawn for each theme. The artwork has its background baked in rather than being
+transparent, so both variants are rendered and CSS picks one — swapping the `src` from
+React state would flash the wrong logo, since the theme class is applied before first
+paint. The collapsed sidebar shows just the compass mark, because an 8.7:1 wordmark at
+68px would be a few pixels tall. Nothing repeats the name beside the logo; the wordmark
+already says it.
 
 Built by RLAI. ShopperMind and SupplyMind share one theme and one chart palette, so a
 customer running both sees one suite rather than two products.

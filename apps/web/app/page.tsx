@@ -6,9 +6,9 @@ import {
   Mic,
   Target,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 /** The public landing page. */
@@ -16,21 +16,7 @@ export default function Home() {
   return (
     <main>
       <nav className="marketing-nav">
-        <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Image
-            src="/rlailogo.png"
-            alt="RLAI"
-            width={436}
-            height={222}
-            className="brand-logo"
-            priority
-            unoptimized
-          />
-          <span>
-            <span className="sidebar__wordmark">ShopperMind</span>
-            <p className="sidebar__tagline">Shopper intelligence</p>
-          </span>
-        </span>
+        <BrandLogo height={30} priority />
         <span style={{ display: "flex", gap: "var(--s-3)", alignItems: "center" }}>
           <ThemeToggle />
           <Link href="/login" className="btn btn--ghost">Sign in</Link>

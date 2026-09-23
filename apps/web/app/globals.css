@@ -211,30 +211,30 @@ hr.u-rule { border: 0; border-top: 1px solid var(--rule); margin: var(--s-6) 0; 
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 var(--s-4);
+  padding: 0 var(--s-3);
   border-bottom: 1px solid var(--rule);
   flex-shrink: 0;
 }
 .sidebar[data-collapsed="true"] .sidebar__brand { justify-content: center; padding: 0; }
 
-/* The RLAI lockup ships with its navy background baked in — it is not transparent — so
-   it reads as a solid block on the light sidebar exactly as it does in SupplyMind. The
-   small radius is the one liberty taken, so it sits with the rounded card language
-   rather than against it. */
-.brand-logo {
-  height: 34px;
-  width: auto;
+/* Both ShopperMind variants are in the DOM and CSS chooses one. The artwork has its
+   background baked in rather than being transparent, so the light lockup would show a
+   white block on the navy sidebar and vice versa — each variant is only ever shown on
+   the surface it was drawn for. The small radius keeps it with the rounded card
+   language rather than against it. */
+.brand {
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
-  border-radius: var(--r-sm);
+}
+.brand__img {
+  width: auto;
   display: block;
+  border-radius: var(--r-sm);
 }
-.sidebar[data-collapsed="true"] .brand-logo { height: 28px; }
-.sidebar__wordmark {
-  font-size: 15px; font-weight: 700; letter-spacing: -0.02em;
-  color: var(--text-strong); line-height: 1.15; text-decoration: none;
-}
-.sidebar__wordmark:hover { text-decoration: none; }
-.sidebar__tagline { font-size: 9px; color: var(--text-faint); font-weight: 500; margin: 0; }
+.brand__img--dark { display: none; }
+:root.dark .brand__img--light { display: none; }
+:root.dark .brand__img--dark { display: block; }
 
 .sidebar__nav {
   flex: 1; overflow-y: auto; padding: var(--s-3) var(--s-2);

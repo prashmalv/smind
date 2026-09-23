@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ApiError, api, saveSession, type Tenant, type User } from "@/lib/api";
 
@@ -51,18 +51,7 @@ export default function Login() {
     <main className="auth">
       <aside className="auth__aside">
         <div>
-          <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Image
-              src="/rlailogo.png"
-              alt="RLAI"
-              width={436}
-              height={222}
-              className="brand-logo"
-              priority
-              unoptimized
-            />
-            <span className="sidebar__wordmark">ShopperMind</span>
-          </span>
+          <BrandLogo height={34} priority />
           <h1
             className="u-display"
             style={{ fontSize: "var(--t-title)", margin: "var(--s-6) 0 var(--s-4)", maxWidth: "14ch" }}

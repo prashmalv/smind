@@ -23,11 +23,11 @@ import {
   SlidersHorizontal,
   Users,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { clearSession, getTenant, getToken, getUser, type Tenant, type User } from "@/lib/api";
 
@@ -119,21 +119,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         data-mobile-open={mobileOpen}
       >
         <div className="sidebar__brand">
-          <Image
-            src="/rlailogo.png"
-            alt="RLAI"
-            width={436}
-            height={222}
-            className="brand-logo"
-            priority
-            unoptimized
-          />
-          {!collapsed && (
-            <span>
-              <Link href="/command" className="sidebar__wordmark">ShopperMind</Link>
-              <p className="sidebar__tagline">{tenant?.name ?? "Shopper intelligence"}</p>
-            </span>
-          )}
+          {/* The wordmark already says ShopperMind, so nothing is repeated beside it. */}
+          <Link href="/command" aria-label="ShopperMind — command center">
+            <BrandLogo height={collapsed ? 30 : 24} mark={collapsed} priority />
+          </Link>
         </div>
 
         <div className="sidebar__nav scrollbar-hide">
